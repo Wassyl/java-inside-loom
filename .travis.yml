@@ -1,10 +1,12 @@
 language: java
-jdk: openjdk16
+jdk: openjdk15
 
 before_install:
+  - jdk_switcher use openjdk15
   - wget https://github.com/forax/java-next/releases/download/untagged-4890d0aa579cf85dd353/jdk-16-loom-linux.tar.gz
   - tar -xzf jdk-16-loom-linux.tar.gz
   - export JAVA_HOME=$HOME/jdk-16-loom
+  - $TRAVIS_BUILD_DIR/install-jdk.sh --install jdk-16-loom --target $JAVA_HOME
 os:
   - linux
   - osx
