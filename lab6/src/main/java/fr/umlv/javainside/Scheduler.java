@@ -1,16 +1,19 @@
 package fr.umlv.javainside;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Scheduler {
-    private enum SCHEDULER_POLICY{
+    public enum SCHEDULER_POLICY{
         STACK,FIFO,RANDOM
     }
-    private SCHEDULER_POLICY policy = SCHEDULER_POLICY.STACK;
+    private final SCHEDULER_POLICY policy;
+    private final List<Continuation> list = (ArrayList<Continuation>) new ArrayList();
 
-    private final ArrayList<Continuation> list = new ArrayList();
+    public Scheduler( SCHEDULER_POLICY policy ){
+        this.policy = policy;
+    }
 
     public void enqueue( ContinuationScope scope ) {
         var cont = Continuation.getCurrentContinuation(scope);
@@ -22,26 +25,16 @@ public class Scheduler {
     }
 
     public void runLoop() {
-        while( !list.stream().allMatch(Continuation::isDone) ){
-            switch ( policy ){
-                case STACK:{
-                    var conts = list.stream()
-                                                    .filter( e -> !e.isDone() )
-                                                    .collect(Collectors.toList());
-                    var cont = conts.get( conts.size()-1 );
-                    cont.run();
-                }
-                case FIFO: {
-                    var cont = list.get( 0 );
-                    cont.run();
-                }
-                case RANDOM:{
-                    var rand = new Random();
-                    var cont = list.get( rand.nextInt(list.size()) );
-                    cont.run();
-                }
-            }
+        while( !list.isEmpty() ) {
+            Continuation cont;
+            switch(policy){
+                case STACK  -> cont = list.remove( list.size() -1 );
+                case FIFO   -> cont = list.remove( 0 );
+                case RANDOM -> cont = list.remove( ThreadLocalRandom.current().nextInt(0, list.size() ));
+                default     -> throw new IllegalStateException("hello there ? ");
 
+            }
+            cont.run();
         }
     }
 
