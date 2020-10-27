@@ -32,7 +32,8 @@ public class Scheduler {
                     cont.run();
                 }
                 case FIFO: {
-
+                    var cont = list.get( 0 );
+                    cont.run();
                 }
                 case RANDOM:{
                     var rand = new Random();
