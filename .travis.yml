@@ -1,6 +1,10 @@
 language: java
 jdk: openjdk16
 
+before_install:
+  - wget https://github.com/forax/java-next/releases/download/untagged-4890d0aa579cf85dd353/jdk-16-loom-linux.tar.gz
+  - tar -xzf jdk-16-loom-linux.tar.gz
+  - export JAVA_HOME=jdk-16-loom-linux
 os:
   - linux
   - osx
