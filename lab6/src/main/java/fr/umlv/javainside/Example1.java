@@ -70,7 +70,7 @@ public class Example1 {
 
     public static void main(String[] args) {
         var scope = new ContinuationScope("scope");
-        var scheduler = new Scheduler(Scheduler.SCHEDULER_POLICY.STACK);
+        var scheduler = new Scheduler(Scheduler.Policy.STACK);
         var continuation1 = new Continuation(scope, () -> {
             System.out.println("start 1");
             scheduler.enqueue(scope);

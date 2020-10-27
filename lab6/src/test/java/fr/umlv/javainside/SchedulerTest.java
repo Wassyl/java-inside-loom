@@ -11,7 +11,7 @@ public class SchedulerTest {
 
     @Test
     public void testStack() {
-        var scheduler = new Scheduler(Scheduler.SCHEDULER_POLICY.STACK);
+        var scheduler = new Scheduler(Scheduler.Policy.STACK);
         var scope = new ContinuationScope("scope");
         var list = new ArrayList<String>();
         var continuation1 = new Continuation(scope, () -> {
@@ -37,7 +37,7 @@ public class SchedulerTest {
 
     @Test
     public void testFifo() {
-        var scheduler = new Scheduler(Scheduler.SCHEDULER_POLICY.FIFO);
+        var scheduler = new Scheduler(Scheduler.Policy.FIFO);
         var scope = new ContinuationScope("scope");
         var list = new ArrayList<String>();
         var continuation1 = new Continuation(scope, () -> {
